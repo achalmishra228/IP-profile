@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Achal Mishra — Full-Stack Developer</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          maroon: { 50:'#fbecec',100:'#f3d4d4',400:'#8a2b30',500:'#7a1f24',600:'#5c1418',700:'#3d0f14',800:'#2a0a0d',900:'#1c0709' },
+          gold:   { 50:'#fdf8ec',100:'#f7ecc9',200:'#efd68f',300:'#e6bf5f',400:'#e2872f',500:'#d4af37',600:'#b8901f' },
+          cream: { DEFAULT:'#f7ecd9' }
+        },
+        fontFamily: {
+          serif: ["'Cormorant Garamond'","Georgia","serif"],
+          sans: ["'Plus Jakarta Sans'","sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); }
+  html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+  *{ box-sizing:border-box; }
+  body{ font-family:'Plus Jakarta Sans', sans-serif; }
+  h1,h2,h3,.font-serif-display{ font-family:'Cormorant Garamond', Georgia, serif; }
+  ::-webkit-scrollbar{ width:8px; }
+  ::-webkit-scrollbar-track{ background:transparent; }
+  ::-webkit-scrollbar-thumb{ background:#b8901f; border-radius:4px; }
+  .dark ::-webkit-scrollbar-thumb{ background:#5c1418; }
+  #particleCanvas{ position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+
+  header{ padding-top:env(safe-area-inset-top,0px); }
+  #hero{ padding-top:calc(5rem + env(safe-area-inset-top,0px)); }
+
+  /* Ganesha artwork */
+  #ganesha path{
+    fill:none; stroke:#d4af37; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray:1400; stroke-dashoffset:1400; animation:draw 2.4s ease forwards 0.3s;
+  }
+  #ganesha .fillshape{ fill:#e2872f; opacity:0; animation:fadein 1.4s ease forwards 2s; }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes fadein{ to{ opacity:0.85; } }
+  .glow-pulse{
+    position:absolute; top:50%; left:50%; width:300px; height:300px; transform:translate(-50%,-50%);
+    border-radius:50%; background:radial-gradient(circle, rgba(212,175,55,0.35) 0%, rgba(212,175,55,0) 70%);
+    animation:pulse 3.2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{ opacity:0.5; transform:translate(-50%,-50%) scale(0.9); } 50%{ opacity:1; transform:translate(-50%,-50%) scale(1.12); } }
+  .mandala{
+    position:absolute; top:50%; left:50%; width:min(80vw,420px); height:min(80vw,420px);
+    transform:translate(-50%,-50%); opacity:0.14; animation:spin 100s linear infinite;
+  }
+  @keyframes spin{ to{ transform:translate(-50%,-50%) rotate(360deg); } }
+  .om-mark{ opacity:0; animation:fadein2 1s ease forwards 2.3s; }
+  @keyframes fadein2{ to{ opacity:1; } }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; }
+    #ganesha path{ stroke-dashoffset:0; }
+    #ganesha .fillshape, .om-mark{ opacity:1; }
+  }
+</style>
+</head>
+<body class="bg-cream text-maroon-900 dark:bg-maroon-900 dark:text-gold-50 transition-colors duration-300 min-h-screen relative selection:bg-gold-500 selection:text-maroon-900">
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-cream/85 dark:bg-maroon-900/85 backdrop-blur-md border-b border-gold-500/20 transition-colors">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="#hero" class="flex items-center space-x-3 group">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-maroon-600 to-gold-500 flex items-center justify-center text-cream font-bold text-lg shadow-md group-hover:scale-105 transition-transform">AM</div>
+      <span class="font-serif-display font-bold text-lg tracking-tight text-maroon-800 dark:text-gold-200">Achal Mishra</span>
+    </a>
+    <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+      <a href="#about" class="hover:text-gold-600 dark:hover:text-gold-300 transition-colors">About</a>
+      <a href="#signature" class="hover:text-gold-600 dark:hover:text-gold-300 transition-colors">Specialty</a>
+      <a href="#skills" class="hover:text-gold-600 dark:hover:text-gold-300 transition-colors">Skills</a>
+      <a href="#projects" class="hover:text-gold-600 dark:hover:text-gold-300 transition-colors">Projects</a>
+      <a href="#experience" class="hover:text-gold-600 dark:hover:text-gold-300 transition-colors">Experience</a>
+      <a href="#contact" class="hover:text-gold-600 dark:hover:text-gold-300 transition-colors">Contact</a>
+    </nav>
+    <div class="flex items-center space-x-4">
+      <button id="themeToggle" aria-label="Toggle Theme" class="p-2.5 rounded-xl bg-gold-500/10 text-gold-600 dark:text-gold-300 hover:bg-gold-500/20 transition-colors">
+        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+        <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+      </button>
+      <a href="#contact" class="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-xl bg-maroon-700 hover:bg-maroon-600 text-cream text-sm font-semibold shadow-lg shadow-maroon-700/25 transition-all">Let's Talk</a>
+      <button id="mobileMenuBtn" aria-label="Open Mobile Menu" class="md:hidden p-2.5 rounded-xl bg-gold-500/10 text-gold-600 dark:text-gold-300">
+        <i data-lucide="menu" class="w-5 h-5"></i>
+      </button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="hidden md:hidden bg-cream dark:bg-maroon-900 border-b border-gold-500/20 px-4 pt-2 pb-6 space-y-3">
+    <a href="#about" class="block py-2 text-base font-medium hover:text-gold-600">About</a>
+    <a href="#signature" class="block py-2 text-base font-medium hover:text-gold-600">Specialty</a>
+    <a href="#skills" class="block py-2 text-base font-medium hover:text-gold-600">Skills</a>
+    <a href="#projects" class="block py-2 text-base font-medium hover:text-gold-600">Projects</a>
+    <a href="#experience" class="block py-2 text-base font-medium hover:text-gold-600">Experience</a>
+    <a href="#contact" class="block py-2 text-base font-medium hover:text-gold-600">Contact</a>
+  </div>
+</header>
+
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden pb-16 bg-gradient-to-b from-transparent to-gold-500/5 dark:to-maroon-800/40">
+  <canvas id="particleCanvas"></canvas>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 grid lg:grid-cols-2 gap-12 items-center">
+    <div class="text-center lg:text-left order-2 lg:order-1">
+      <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-700 dark:text-gold-300 text-xs sm:text-sm font-semibold mb-6">
+        <i data-lucide="sparkles" class="w-4 h-4"></i>
+        <span>Software Engineer & Problem Solver</span>
+      </div>
+      <h1 class="font-serif-display text-4xl sm:text-6xl font-bold tracking-tight mb-6 text-maroon-900 dark:text-cream">
+        Hi, I'm <span class="text-gold-600 dark:text-gold-300">Achal Mishra</span>
+      </h1>
+      <p class="max-w-xl mx-auto lg:mx-0 text-lg sm:text-xl text-maroon-700/80 dark:text-cream/75 mb-10 leading-relaxed">
+        I build robust, scalable applications and delightful digital experiences with modern web technologies, clean architecture, and passion.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
+        <a href="#projects" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-maroon-700 hover:bg-maroon-600 text-cream font-semibold shadow-xl shadow-maroon-700/25 transition-all hover:scale-105 flex items-center justify-center space-x-2">
+          <span>Explore Work</span><i data-lucide="arrow-right" class="w-5 h-5"></i>
+        </a>
+        <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-transparent border border-gold-500/40 hover:border-gold-500 font-semibold transition-all hover:scale-105 flex items-center justify-center space-x-2">
+          <i data-lucide="mail" class="w-5 h-5 text-gold-600 dark:text-gold-300"></i><span>Get in Touch</span>
+        </a>
+      </div>
+      <div class="mt-12 flex justify-center lg:justify-start items-center space-x-4">
+        <a href="https://github.com" target="_blank" rel="noopener" class="p-3 rounded-xl bg-gold-500/10 border border-gold-500/25 hover:text-gold-600 shadow-sm transition-transform hover:-translate-y-1"><i data-lucide="github" class="w-5 h-5"></i></a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener" class="p-3 rounded-xl bg-gold-500/10 border border-gold-500/25 hover:text-gold-600 shadow-sm transition-transform hover:-translate-y-1"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+        <a href="https://twitter.com" target="_blank" rel="noopener" class="p-3 rounded-xl bg-gold-500/10 border border-gold-500/25 hover:text-gold-600 shadow-sm transition-transform hover:-translate-y-1"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+      </div>
+    </div>
+
+    <div class="order-1 lg:order-2 relative flex items-center justify-center h-72 sm:h-96">
+      <svg class="mandala" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke="#d4af37" stroke-width="0.4">
+          <circle cx="100" cy="100" r="90"/><circle cx="100" cy="100" r="75"/><circle cx="100" cy="100" r="60"/>
+          <g id="petals"></g>
+        </g>
+      </svg>
+      <div class="glow-pulse"></div>
+      <svg id="ganesha" viewBox="0 0 300 320" xmlns="http://www.w3.org/2000/svg" class="w-52 sm:w-64 drop-shadow-[0_0_18px_rgba(212,175,55,0.45)]">
+        <ellipse class="fillshape" cx="150" cy="150" rx="92" ry="86"/>
+        <path d="M95,120 C90,80 120,50 150,50 C180,50 210,80 205,120 C215,130 218,150 208,165"/>
+        <path d="M95,120 C55,105 45,150 70,175 C88,188 100,175 100,155"/>
+        <path d="M205,120 C245,105 255,150 230,175 C212,188 200,175 200,155"/>
+        <path d="M150,150 C140,175 165,185 155,205 C147,222 165,235 150,250 C140,260 150,272 165,268"/>
+        <path d="M155,205 C170,208 178,198 176,186"/>
+        <path d="M120,55 C130,30 170,30 180,55"/>
+        <path d="M145,32 L150,15 L155,32"/>
+        <path d="M125,110 C130,105 138,105 141,111"/>
+        <path d="M159,111 C162,105 170,105 175,110"/>
+        <path d="M78,200 C60,240 90,290 150,295 C210,290 240,240 222,200"/>
+      </svg>
+      <div class="om-mark absolute bottom-2 text-gold-500 text-2xl">ॐ</div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="py-24 bg-white/40 dark:bg-maroon-800/30 border-t border-gold-500/15 transition-colors">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="font-serif-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">About Me</h2>
+      <p class="text-maroon-700/80 dark:text-cream/70 text-lg">Get to know who I am, my background, and what drives me.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 flex justify-center">
+        <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-tr from-maroon-600 to-gold-500 p-1">
+          <div class="w-full h-full bg-cream dark:bg-maroon-900 rounded-xl flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-maroon-600 to-gold-500 text-cream font-extrabold text-3xl flex items-center justify-center mb-4 shadow-lg">AM</div>
+            <h3 class="font-serif-display text-xl font-bold">Achal Mishra</h3>
+            <p class="text-sm text-maroon-600/70 dark:text-gold-200/70 mt-1">Software Developer</p>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-7 space-y-6">
+        <h3 class="font-serif-display text-2xl sm:text-3xl font-bold tracking-tight">Passionate about crafting clean code and impactful digital products.</h3>
+        <p class="text-maroon-700/85 dark:text-cream/80 leading-relaxed text-base sm:text-lg">
+          Hello! I'm Achal Mishra, a dedicated software engineer specializing in building high-performance web applications and backend systems. I enjoy tackling complex challenges, optimizing codebases, and creating intuitive user experiences that solve real-world problems.
+        </p>
+        <p class="text-maroon-700/85 dark:text-cream/80 leading-relaxed text-base sm:text-lg">
+          Whether it's designing robust APIs, structuring responsive user interfaces, or integrating cloud infrastructure, I focus on writing maintainable and scalable code that stands the test of time.
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4">
+          <div class="p-4 rounded-xl bg-gold-500/10 border border-gold-500/25">
+            <div class="text-2xl font-bold text-gold-600 dark:text-gold-300 mb-1">3+</div>
+            <div class="text-sm text-maroon-600/70 dark:text-cream/60">Years Experience</div>
+          </div>
+          <div class="p-4 rounded-xl bg-gold-500/10 border border-gold-500/25">
+            <div class="text-2xl font-bold text-gold-600 dark:text-gold-300 mb-1">20+</div>
+            <div class="text-sm text-maroon-600/70 dark:text-cream/60">Projects Completed</div>
+          </div>
+          <div class="p-4 rounded-xl bg-gold-500/10 border border-gold-500/25 col-span-2 sm:col-span-1">
+            <div class="text-2xl font-bold text-gold-600 dark:text-gold-300 mb-1">100%</div>
+            <div class="text-sm text-maroon-600/70 dark:text-cream/60">Client Satisfaction</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="signature" class="py-24 border-t border-gold-500/15">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="relative rounded-3xl border border-gold-500/30 bg-gradient-to-br from-maroon-700/10 via-transparent to-gold-500/10 p-10 sm:p-14 overflow-hidden">
+      <div class="absolute -top-10 -right-10 text-gold-500/10 text-[10rem] font-serif-display select-none pointer-events-none">ॐ</div>
+      <div class="relative grid md:grid-cols-12 gap-8 items-center">
+        <div class="md:col-span-4 flex flex-col items-center md:items-start">
+          <span class="text-5xl font-serif-display font-bold text-gold-600 dark:text-gold-300">1</span>
+          <span class="text-sm tracking-wide text-maroon-600/70 dark:text-cream/60 mt-1">developer, every layer</span>
+        </div>
+        <div class="md:col-span-8 text-center md:text-left">
+          <h2 class="font-serif-display text-2xl sm:text-3xl font-bold mb-3">My Signature: End-to-End Ownership</h2>
+          <p class="text-maroon-700/85 dark:text-cream/80 text-base sm:text-lg leading-relaxed">
+            I don't just write code in one layer and hand it off. From database schema to API design to the pixel-level interface, I carry a feature from idea to production myself — which means fewer handoffs, faster iteration, and a product that feels considered end to end.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="py-24 bg-white/40 dark:bg-maroon-800/30 border-t border-gold-500/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="font-serif-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">Skills & Expertise</h2>
+      <p class="text-maroon-700/80 dark:text-cream/70 text-lg">Technologies and tools I work with on a daily basis.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="p-6 rounded-2xl bg-cream dark:bg-maroon-900 border border-gold-500/25 shadow-sm hover:shadow-md transition-shadow">
+        <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center text-gold-600 dark:text-gold-300 mb-6"><i data-lucide="code" class="w-6 h-6"></i></div>
+        <h3 class="font-serif-display text-xl font-bold mb-4">Frontend Development</h3>
+        <div class="space-y-4">
+          <div><div class="flex justify-between text-sm font-medium mb-1"><span>JavaScript / TypeScript</span><span class="text-gold-600">90%</span></div><div class="w-full bg-gold-500/10 h-2 rounded-full overflow-hidden"><div class="bg-gold-500 h-full rounded-full" style="width: 90%"></div></div></div>
+          <div><div class="flex justify-between text-sm font-medium mb-1"><span>React & Next.js</span><span class="text-gold-600">85%</span></div><div class="w-full bg-gold-500/10 h-2 rounded-full overflow-hidden"><div class="bg-gold-500 h-full rounded-full" style="width: 85%"></div></div></div>
+          <div><div class="flex justify-between text-sm font-medium mb-1"><span>HTML5 / Tailwind CSS</span><span class="text-gold-600">95%</span></div><div class="w-full bg-gold-500/10 h-2 rounded-full overflow-hidden"><div class="bg-gold-500 h-full rounded-full" style="width: 95%"></div></div></div>
+        </div>
+      </div>
+      <div class="p-6 rounded-2xl bg-cream dark:bg-maroon-900 border border-gold-500/25 shadow-sm hover:shadow-md transition-shadow">
+        <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center text-gold-600 dark:text-gold-300 mb-6"><i data-lucide="server" class="w-6 h-6"></i></div>
+        <h3 class="font-serif-display text-xl font-bold mb-4">Backend & Databases</h3>
+        <div class="space-y-4">
+          <div><div class="flex justify-between text-sm font-medium mb-1"><span>Node.js / Express</span><span class="text-gold-600">85%</span></div><div class="w-full bg-gold-500/10 h-2 rounded-full overflow-hidden"><div class="bg-gold-500 h-full rounded-full" style="width: 85%"></div></div></div>
+          <div><div class="flex justify-between text-sm font-medium mb-1"><span>Python / FastAPI</span><span class="text-gold-600">80%</span></div><div class="w-full bg-gold-500/10 h-2 rounded-full overflow-hidden"><div class="bg-gold-500 h-full rounded-full" style="width: 80%"></div></div></div>
+          <div><div class="flex justify-between text-sm font-medium mb-1"><span>PostgreSQL / MongoDB</span><span class="text-gold-600">85%</span></div><div class="w-full bg-gold-500/10 h-2 rounded-full overflow-hidden"><div class="bg-gold-500 h-full rounded-full" style="width: 85%"></div></div></div>
+        </div>
+      </div>
+      <div class="p-6 rounded-2xl bg-cream dark:bg-maroon-900 border border-gold-500/25 shadow-sm hover:shadow-md transition-shadow md:col-span-2 lg:col-span-1">
+        <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center text-gold-600 dark:text-gold-300 mb-6"><i data-lucide="cpu" class="w-6 h-6"></i></div>
+        <h3 class="font-serif-display text-xl font-bold mb-4">Tools & DevOps</h3>
+        <div class="space-y-4">
+          <div><div class="flex justify-between text-sm font-medium mb-1"><span>Git & GitHub Actions</span><span class="text-gold-600">90%</span></div><div class="w-full bg-gold-500/10 h-2 rounded-full overflow-hidden"><div class="bg-gold-500 h-full rounded-full" style="width: 90%"></div></div></div>
+          <div><div class="flex justify-between text-sm font-medium mb-1"><span>Docker & Containers</span><span class="text-gold-600">75%</span></div><div class="w-full bg-gold-500/10 h-2 rounded-full overflow-hidden"><div class="bg-gold-500 h-full rounded-full" style="width: 75%"></div></div></div>
+          <div><div class="flex justify-between text-sm font-medium mb-1"><span>AWS Cloud Services</span><span class="text-gold-600">70%</span></div><div class="w-full bg-gold-500/10 h-2 rounded-full overflow-hidden"><div class="bg-gold-500 h-full rounded-full" style="width: 70%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="py-24 border-t border-gold-500/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="font-serif-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">Featured Projects</h2>
+      <p class="text-maroon-700/80 dark:text-cream/70 text-lg">A selection of recent applications and systems I've engineered.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="group rounded-2xl bg-white/40 dark:bg-maroon-900 border border-gold-500/25 overflow-hidden flex flex-col justify-between hover:border-gold-500 transition-all shadow-sm hover:shadow-xl">
+        <div>
+          <div class="h-48 bg-gradient-to-br from-maroon-700 to-gold-500 p-6 flex items-end relative overflow-hidden">
+            <div class="relative z-10 text-cream font-bold text-xl flex items-center space-x-2"><i data-lucide="layers" class="w-6 h-6"></i><span>CloudPulse Analytics</span></div>
+          </div>
+          <div class="p-6">
+            <h3 class="font-serif-display text-xl font-bold mb-2 group-hover:text-gold-600 transition-colors">CloudPulse Dashboard</h3>
+            <p class="text-maroon-700/80 dark:text-cream/70 text-sm mb-4 leading-relaxed">A real-time cloud resource monitoring dashboard with live metrics, alerting systems, and interactive charts.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-2.5 py-1 rounded-md bg-gold-500/10 text-gold-600 dark:text-gold-300 text-xs font-semibold">React</span>
+              <span class="px-2.5 py-1 rounded-md bg-gold-500/10 text-gold-600 dark:text-gold-300 text-xs font-semibold">Tailwind</span>
+              <span class="px-2.5 py-1 rounded-md bg-gold-500/10 text-gold-600 dark:text-gold-300 text-xs font-semibold">Node.js</span>
+            </div>
+          </div>
+        </div>
+        <div class="px-6 pb-6 pt-4 flex items-center justify-between border-t border-gold-500/15">
+          <a href="https://github.com" target="_blank" rel="noopener" class="text-sm font-semibold flex items-center space-x-1 hover:text-gold-600"><i data-lucide="github" class="w-4 h-4"></i><span>Source Code</span></a>
+          <a href="https://github.com" target="_blank" rel="noopener" class="text-sm font-semibold flex items-center space-x-1 text-gold-600 hover:underline"><span>Live Demo</span><i data-lucide="external-link" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+      <div class="group rounded-2xl bg-white/40 dark:bg-maroon-900 border border-gold-500/25 overflow-hidden flex flex-col justify-between hover:border-gold-500 transition-all shadow-sm hover:shadow-xl">
+        <div>
+          <div class="h-48 bg-gradient-to-br from-maroon-600 to-gold-400 p-6 flex items-end relative overflow-hidden">
+            <div class="relative z-10 text-cream font-bold text-xl flex items-center space-x-2"><i data-lucide="shopping-cart" class="w-6 h-6"></i><span>ShopScale E-Commerce</span></div>
+          </div>
+          <div class="p-6">
+            <h3 class="font-serif-display text-xl font-bold mb-2 group-hover:text-gold-600 transition-colors">ShopScale API & Store</h3>
+            <p class="text-maroon-700/80 dark:text-cream/70 text-sm mb-4 leading-relaxed">High-performance headless e-commerce store with secure payment gateways, inventory management, and fast search.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-2.5 py-1 rounded-md bg-gold-500/10 text-gold-600 dark:text-gold-300 text-xs font-semibold">Next.js</span>
+              <span class="px-2.5 py-1 rounded-md bg-gold-500/10 text-gold-600 dark:text-gold-300 text-xs font-semibold">PostgreSQL</span>
+              <span class="px-2.5 py-1 rounded-md bg-gold-500/10 text-gold-600 dark:text-gold-300 text-xs font-semibold">Stripe</span>
+            </div>
+          </div>
+        </div>
+        <div class="px-6 pb-6 pt-4 flex items-center justify-between border-t border-gold-500/15">
+          <a href="https://github.com" target="_blank" rel="noopener" class="text-sm font-semibold flex items-center space-x-1 hover:text-gold-600"><i data-lucide="github" class="w-4 h-4"></i><span>Source Code</span></a>
+          <a href="https://github.com" target="_blank" rel="noopener" class="text-sm font-semibold flex items-center space-x-1 text-gold-600 hover:underline"><span>Live Demo</span><i data-lucide="external-link" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+      <div class="group rounded-2xl bg-white/40 dark:bg-maroon-900 border border-gold-500/25 overflow-hidden flex flex-col justify-between hover:border-gold-500 transition-all shadow-sm hover:shadow-xl md:col-span-2 lg:col-span-1">
+        <div>
+          <div class="h-48 bg-gradient-to-br from-maroon-700 to-gold-600 p-6 flex items-end relative overflow-hidden">
+            <div class="relative z-10 text-cream font-bold text-xl flex items-center space-x-2"><i data-lucide="shield-check" class="w-6 h-6"></i><span>DevSec Scanner</span></div>
+          </div>
+          <div class="p-6">
+            <h3 class="font-serif-display text-xl font-bold mb-2 group-hover:text-gold-600 transition-colors">DevSec Vulnerability Tool</h3>
+            <p class="text-maroon-700/80 dark:text-cream/70 text-sm mb-4 leading-relaxed">Automated security analysis CLI tool and web dashboard for detecting vulnerabilities in containerized applications.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-2.5 py-1 rounded-md bg-gold-500/10 text-gold-600 dark:text-gold-300 text-xs font-semibold">Python</span>
+              <span class="px-2.5 py-1 rounded-md bg-gold-500/10 text-gold-600 dark:text-gold-300 text-xs font-semibold">FastAPI</span>
+              <span class="px-2.5 py-1 rounded-md bg-gold-500/10 text-gold-600 dark:text-gold-300 text-xs font-semibold">Docker</span>
+            </div>
+          </div>
+        </div>
+        <div class="px-6 pb-6 pt-4 flex items-center justify-between border-t border-gold-500/15">
+          <a href="https://github.com" target="_blank" rel="noopener" class="text-sm font-semibold flex items-center space-x-1 hover:text-gold-600"><i data-lucide="github" class="w-4 h-4"></i><span>Source Code</span></a>
+          <a href="https://github.com" target="_blank" rel="noopener" class="text-sm font-semibold flex items-center space-x-1 text-gold-600 hover:underline"><span>Live Demo</span><i data-lucide="external-link" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience" class="py-24 bg-white/40 dark:bg-maroon-800/30 border-t border-gold-500/15">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="font-serif-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">Work Experience</h2>
+      <p class="text-maroon-700/80 dark:text-cream/70 text-lg">My professional journey and career milestones.</p>
+    </div>
+    <div class="relative border-l-2 border-gold-500/30 ml-4 sm:ml-8 space-y-12">
+      <div class="relative pl-8 sm:pl-10">
+        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold-500 border-4 border-cream dark:border-maroon-900"></div>
+        <div class="p-6 rounded-2xl bg-cream dark:bg-maroon-900 border border-gold-500/25 shadow-sm">
+          <span class="text-xs font-semibold px-3 py-1 rounded-full bg-gold-500/10 text-gold-600 dark:text-gold-300 inline-block mb-3">2023 - Present</span>
+          <h3 class="font-serif-display text-xl font-bold mb-1">Senior Software Engineer</h3>
+          <h4 class="text-maroon-600/70 dark:text-cream/60 text-sm font-medium mb-4">TechCorp Solutions</h4>
+          <p class="text-maroon-700/85 dark:text-cream/80 text-sm leading-relaxed mb-4">Leading frontend and backend architecture for high-scale SaaS applications. Mentoring junior developers, optimizing database queries, and improving CI/CD pipeline efficiency by 35%.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-2 py-1 bg-gold-500/10 rounded text-xs font-medium">React</span>
+            <span class="px-2 py-1 bg-gold-500/10 rounded text-xs font-medium">Node.js</span>
+            <span class="px-2 py-1 bg-gold-500/10 rounded text-xs font-medium">AWS</span>
+          </div>
+        </div>
+      </div>
+      <div class="relative pl-8 sm:pl-10">
+        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold-500 border-4 border-cream dark:border-maroon-900"></div>
+        <div class="p-6 rounded-2xl bg-cream dark:bg-maroon-900 border border-gold-500/25 shadow-sm">
+          <span class="text-xs font-semibold px-3 py-1 rounded-full bg-gold-500/10 text-gold-600 dark:text-gold-300 inline-block mb-3">2021 - 2023</span>
+          <h3 class="font-serif-display text-xl font-bold mb-1">Full Stack Developer</h3>
+          <h4 class="text-maroon-600/70 dark:text-cream/60 text-sm font-medium mb-4">InnovateLabs Inc.</h4>
+          <p class="text-maroon-700/85 dark:text-cream/80 text-sm leading-relaxed mb-4">Developed responsive web applications, implemented RESTful microservices, and collaborated closely with UI/UX designers to deliver seamless user interactions.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-2 py-1 bg-gold-500/10 rounded text-xs font-medium">TypeScript</span>
+            <span class="px-2 py-1 bg-gold-500/10 rounded text-xs font-medium">Express</span>
+            <span class="px-2 py-1 bg-gold-500/10 rounded text-xs font-medium">PostgreSQL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="py-24 border-t border-gold-500/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="font-serif-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">Get In Touch</h2>
+      <p class="text-maroon-700/80 dark:text-cream/70 text-lg">Have a project in mind or want to collaborate? Feel free to reach out!</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-5 space-y-8">
+        <div class="flex items-start space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center text-gold-600 dark:text-gold-300 flex-shrink-0"><i data-lucide="mail" class="w-6 h-6"></i></div>
+          <div><h3 class="font-serif-display text-lg font-bold">Email Me</h3><p class="text-maroon-600/70 dark:text-cream/60 text-sm mt-1">achal.mishra@example.com</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center text-gold-600 dark:text-gold-300 flex-shrink-0"><i data-lucide="map-pin" class="w-6 h-6"></i></div>
+          <div><h3 class="font-serif-display text-lg font-bold">Location</h3><p class="text-maroon-600/70 dark:text-cream/60 text-sm mt-1">Pune, Maharashtra, India</p></div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-gold-500/10 flex items-center justify-center text-gold-600 dark:text-gold-300 flex-shrink-0"><i data-lucide="clock" class="w-6 h-6"></i></div>
+          <div><h3 class="font-serif-display text-lg font-bold">Availability</h3><p class="text-maroon-600/70 dark:text-cream/60 text-sm mt-1">Open for Opportunities & Freelance</p></div>
+        </div>
+      </div>
+      <div class="lg:col-span-7">
+        <form id="contactForm" class="p-8 rounded-2xl bg-white/40 dark:bg-maroon-900 border border-gold-500/25 space-y-6 shadow-sm">
+          <div id="formMessage" class="hidden p-4 rounded-xl text-sm font-semibold"></div>
+          <div><label for="name" class="block text-sm font-medium mb-2">Your Name</label><input type="text" id="name" required class="w-full px-4 py-3 rounded-xl bg-cream dark:bg-maroon-800 border border-gold-500/25 focus:outline-none focus:border-gold-500 transition-colors text-sm" placeholder="John Doe"></div>
+          <div><label for="email" class="block text-sm font-medium mb-2">Your Email</label><input type="email" id="email" required class="w-full px-4 py-3 rounded-xl bg-cream dark:bg-maroon-800 border border-gold-500/25 focus:outline-none focus:border-gold-500 transition-colors text-sm" placeholder="john@example.com"></div>
+          <div><label for="message" class="block text-sm font-medium mb-2">Your Message</label><textarea id="message" rows="4" required class="w-full px-4 py-3 rounded-xl bg-cream dark:bg-maroon-800 border border-gold-500/25 focus:outline-none focus:border-gold-500 transition-colors text-sm resize-none" placeholder="Hello Achal, I'd like to discuss..."></textarea></div>
+          <button type="submit" class="w-full py-4 rounded-xl bg-maroon-700 hover:bg-maroon-600 text-cream font-semibold shadow-lg shadow-maroon-700/25 transition-all flex items-center justify-center space-x-2"><span>Send Message</span><i data-lucide="send" class="w-4 h-4"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="py-12 border-t border-gold-500/15 text-center transition-colors">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-maroon-600 to-gold-500 flex items-center justify-center text-cream font-bold text-sm">AM</div>
+      <span class="font-serif-display font-bold tracking-tight">Achal Mishra</span>
+    </div>
+    <p class="text-sm text-maroon-600/70 dark:text-cream/60">&copy; 2026 Achal Mishra. All rights reserved.</p>
+    <div class="flex space-x-4 text-maroon-600/70 dark:text-cream/60">
+      <a href="https://github.com" target="_blank" rel="noopener" class="hover:text-gold-600 transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener" class="hover:text-gold-600 transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+      <a href="https://twitter.com" target="_blank" rel="noopener" class="hover:text-gold-600 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  (function(){
+    const g = document.getElementById('petals');
+    for(let i=0;i<24;i++){
+      const angle = (i*15)*Math.PI/180;
+      const x1 = 100+82*Math.cos(angle), y1 = 100+82*Math.sin(angle);
+      const x2 = 100+68*Math.cos(angle), y2 = 100+68*Math.sin(angle);
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1',x1);line.setAttribute('y1',y1);line.setAttribute('x2',x2);line.setAttribute('y2',y2);
+      g.appendChild(line);
+    }
+  })();
+
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+  const themeToggle = document.getElementById('themeToggle');
+  const htmlElement = document.documentElement;
+  try{
+    if (localStorage.getItem('theme') === 'light') {
+      htmlElement.classList.remove('dark');
+    } else {
+      htmlElement.classList.add('dark');
+    }
+  }catch(e){}
+  themeToggle.addEventListener('click', () => {
+    htmlElement.classList.toggle('dark');
+    try{ localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light'); }catch(e){}
+  });
+
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  let particlesArray = [];
+  function resizeCanvas(){ canvas.width = canvas.parentElement.offsetWidth; canvas.height = canvas.parentElement.offsetHeight; }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  class Particle{
+    constructor(){ this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.size=Math.random()*2+1; this.speedX=(Math.random()-0.5)*0.6; this.speedY=(Math.random()-0.5)*0.6; }
+    update(){ this.x+=this.speedX; this.y+=this.speedY; if(this.x>canvas.width)this.x=0; else if(this.x<0)this.x=canvas.width; if(this.y>canvas.height)this.y=0; else if(this.y<0)this.y=canvas.height; }
+    draw(){ ctx.fillStyle='rgba(212,175,55,0.35)'; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); }
+  }
+  function initParticles(){ particlesArray=[]; const n=Math.floor((canvas.width*canvas.height)/18000); for(let i=0;i<n;i++) particlesArray.push(new Particle()); }
+  initParticles();
+  function animateParticles(){ ctx.clearRect(0,0,canvas.width,canvas.height); particlesArray.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animateParticles); }
+  animateParticles();
+
+  const contactForm = document.getElementById('contactForm');
+  const formMessage = document.getElementById('formMessage');
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    formMessage.textContent = `Thank you, ${name}! Your message has been sent successfully. I will get back to you soon.`;
+    formMessage.className = "p-4 rounded-xl text-sm font-semibold bg-gold-500/15 border border-gold-500/40 text-maroon-800 dark:text-gold-100 block";
+    contactForm.reset();
+    setTimeout(() => formMessage.classList.add('hidden'), 6000);
+  });
+</script>
+</body>
+</html>
